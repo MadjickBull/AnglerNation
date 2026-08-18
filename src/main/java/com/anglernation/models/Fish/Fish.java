@@ -1,6 +1,11 @@
 package com.anglernation.models.Fish;
 
-public class Fish {
+import com.anglernation.models.AbstractEntity;
+
+
+
+public class Fish extends AbstractEntity {
+
 
     private FishType fishType;
     private String name;
@@ -45,7 +50,6 @@ public class Fish {
     public void setSize(Double size) {
         this.size = size;
     }
-
 
     @Override
     public String toString() {

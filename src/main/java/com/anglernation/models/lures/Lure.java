@@ -1,6 +1,10 @@
 package com.anglernation.models.lures;
 
-public class Lure {
+import com.anglernation.models.AbstractEntity;
+
+
+
+public class Lure extends AbstractEntity {
 
     private LureType lureType;
     private String name;

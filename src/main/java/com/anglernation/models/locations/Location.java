@@ -1,91 +1,94 @@
 package com.anglernation.models.locations;
 
-public class Location {
+import com.anglernation.models.AbstractEntity;
 
-    private String name;
-    private Long altitude;
-    private Long longitude;
-    private Long latitude;
-    private Double altitudeRadius;
-    private Double longitudeRadius;
-    private Double latitudeRadius;
+public class Location extends AbstractEntity {
 
-    public Location(String name, Long altitude, Long longitude, Long latitude, Double altitudeRadius, Double longitudeRadius, Double latitudeRadius) {
-        this.name = name;
-        this.altitude = altitude;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.altitudeRadius = altitudeRadius;
-        this.longitudeRadius = longitudeRadius;
-        this.latitudeRadius = latitudeRadius;
-    }
+  private String name;
+  private Long altitude;
+  private Long longitude;
+  private Long latitude;
+  private Double altitudeRadius;
+  private Double longitudeRadius;
+  private Double latitudeRadius;
 
-    public String getName() {
-        return name;
-    }
+  public Location(String name, Long altitude, Long longitude, Long latitude, Double altitudeRadius,
+      Double longitudeRadius, Double latitudeRadius) {
+    this.name = name;
+    this.altitude = altitude;
+    this.longitude = longitude;
+    this.latitude = latitude;
+    this.altitudeRadius = altitudeRadius;
+    this.longitudeRadius = longitudeRadius;
+    this.latitudeRadius = latitudeRadius;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public Long getAltitude() {
-        return altitude;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setAltitude(Long altitude) {
-        this.altitude = altitude;
-    }
+  public Long getAltitude() {
+    return altitude;
+  }
 
-    public Long getLongitude() {
-        return longitude;
-    }
+  public void setAltitude(Long altitude) {
+    this.altitude = altitude;
+  }
 
-    public void setLongitude(Long longitude) {
-        this.longitude = longitude;
-    }
+  public Long getLongitude() {
+    return longitude;
+  }
 
-    public Long getLatitude() {
-        return latitude;
-    }
+  public void setLongitude(Long longitude) {
+    this.longitude = longitude;
+  }
 
-    public void setLatitude(Long latitude) {
-        this.latitude = latitude;
-    }
+  public Long getLatitude() {
+    return latitude;
+  }
 
-    public Double getAltitudeRadius() {
-        return altitudeRadius;
-    }
+  public void setLatitude(Long latitude) {
+    this.latitude = latitude;
+  }
 
-    public void setAltitudeRadius(Double altitudeRadius) {
-        this.altitudeRadius = altitudeRadius;
-    }
+  public Double getAltitudeRadius() {
+    return altitudeRadius;
+  }
 
-    public Double getLongitudeRadius() {
-        return longitudeRadius;
-    }
+  public void setAltitudeRadius(Double altitudeRadius) {
+    this.altitudeRadius = altitudeRadius;
+  }
 
-    public void setLongitudeRadius(Double longitudeRadius) {
-        this.longitudeRadius = longitudeRadius;
-    }
+  public Double getLongitudeRadius() {
+    return longitudeRadius;
+  }
 
-    public Double getLatitudeRadius() {
-        return latitudeRadius;
-    }
+  public void setLongitudeRadius(Double longitudeRadius) {
+    this.longitudeRadius = longitudeRadius;
+  }
 
-    public void setLatitudeRadius(Double latitudeRadius) {
-        this.latitudeRadius = latitudeRadius;
-    }
+  public Double getLatitudeRadius() {
+    return latitudeRadius;
+  }
 
-    @Override
-    public String toString() {
-        return "Location{" +
-                "name='" + name + '\'' +
-                ", altitude=" + altitude +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                ", altitudeRadius=" + altitudeRadius +
-                ", longitudeRadius=" + longitudeRadius +
-                ", latitudeRadius=" + latitudeRadius +
-                '}';
-    }
+  public void setLatitudeRadius(Double latitudeRadius) {
+    this.latitudeRadius = latitudeRadius;
+  }
+
+  @Override
+  public String toString() {
+    return "Location{" +
+        "name='" + name + '\'' +
+        ", altitude=" + altitude +
+        ", longitude=" + longitude +
+        ", latitude=" + latitude +
+        ", altitudeRadius=" + altitudeRadius +
+        ", longitudeRadius=" + longitudeRadius +
+        ", latitudeRadius=" + latitudeRadius +
+        '}';
+  }
 }
