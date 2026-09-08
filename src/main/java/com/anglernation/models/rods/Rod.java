@@ -1,23 +1,38 @@
 package com.anglernation.models.rods;
 
 import com.anglernation.models.AbstractEntity;
+import com.anglernation.models.users.User;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name="rods")
 public class Rod extends AbstractEntity {
 
+  @Enumerated(EnumType.STRING)
   private RodType rodType;
+  @Column(name="brand")
   private String name;
+  @Column(name="length")
   private Double length;
+  @Column(name = "weight")
   private Double weight;
+  @Enumerated(EnumType.STRING)
   private RodPower rodPower;
+  @Enumerated(EnumType.STRING)
   private RodAction rodAction;
 
-  public Rod(RodType rodType, String name, Double length, Double weight, RodPower rodPower, RodAction rodAction) {
-    this.rodType = rodType;
-    this.name = name;
-    this.length = length;
-    this.weight = weight;
-    this.rodPower = rodPower;
-    this.rodAction = rodAction;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "owner_id", nullable = false)
+  private User owner;
+
+  public Rod (){};
+
+  public User getOwner() {
+    return owner;
+  }
+
+  public void setOwner(User owner) {
+    this.owner = owner;
   }
 
   public RodType getRodType() {
@@ -68,15 +83,4 @@ public class Rod extends AbstractEntity {
     this.rodAction = rodAction;
   }
 
-  @Override
-  public String toString() {
-    return "Rod{" +
-        "rodType=" + rodType +
-        ", name='" + name + '\'' +
-        ", length=" + length +
-        ", weight=" + weight +
-        ", rodPower=" + rodPower +
-        ", rodAction=" + rodAction +
-        '}';
-  }
 }

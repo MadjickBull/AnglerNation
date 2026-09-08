@@ -1,25 +1,40 @@
 package com.anglernation.models.lures;
 
 import com.anglernation.models.AbstractEntity;
+import com.anglernation.models.users.User;
+import jakarta.persistence.*;
 
 
-
+@Entity
+@Table(name = "lures")
 public class Lure extends AbstractEntity {
 
+    @Enumerated(EnumType.STRING)
     private LureType lureType;
+    @Column(name = "brand")
     private String name;
+    @Column(name = "color")
     private String color;
+    @Column(name = "size")
     private Double size;
+    @Column(name = "weight")
     private Double weight;
+    @Enumerated(EnumType.STRING)
     private LureBuoyancy lureBuoyancy;
 
-    public Lure(LureType lureType, String name, String color, Double size, Double weight, LureBuoyancy lureBuoyancy) {
-        this.lureType = lureType;
-        this.name = name;
-        this.color = color;
-        this.size = size;
-        this.weight = weight;
-        this.lureBuoyancy = lureBuoyancy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id" , nullable = false)
+    private User owner;
+
+    public Lure(){
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public LureType getLureType() {
@@ -70,15 +85,4 @@ public class Lure extends AbstractEntity {
         this.lureBuoyancy = lureBuoyancy;
     }
 
-    @Override
-    public String toString() {
-        return "Lure{" +
-                "lureType=" + lureType +
-                ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
-                ", size=" + size +
-                ", weight=" + weight +
-                ", lureBuoyancy=" + lureBuoyancy +
-                '}';
-    }
 }

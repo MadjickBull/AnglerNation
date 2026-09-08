@@ -1,23 +1,37 @@
 package com.anglernation.models.posts;
 
 import com.anglernation.models.AbstractEntity;
-import com.anglernation.models.catches.Catch;
+import com.anglernation.models.comments.Comment;
+import com.anglernation.models.users.User;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "posts")
 public class Post extends AbstractEntity {
 
+  @Column(name = "title", nullable = false)
   private String title;
+  @Column(name = "description")
   private String description;
-  private List<String> comments = new ArrayList<>();
-  private List<Catch> catchDetails = new ArrayList<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "author_id", nullable = false)
+  private User author;
+  @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, orphanRemoval = true , cascade = CascadeType.ALL)
+  private List<Comment> comments = new ArrayList<>();
 
-  public Post(String title, String description, List<String> comments, List<Catch> catchDetails) {
-    this.title = title;
-    this.description = description;
-    this.comments = comments;
-    this.catchDetails = catchDetails;
+  public Post() {
+  }
+
+  public User getAuthor() {
+
+    return author;
+  }
+
+  public void setAuthor(User author) {
+    this.author = author;
   }
 
   public String getTitle() {
@@ -36,29 +50,12 @@ public class Post extends AbstractEntity {
     this.description = description;
   }
 
-  public List<String> getComments() {
+  public List<Comment> getComments() {
     return comments;
   }
 
-  public void setComments(List<String> comments) {
+  public void setComments(List<Comment> comments) {
     this.comments = comments;
   }
 
-  public List<Catch> getCatchDetails() {
-    return catchDetails;
-  }
-
-  public void setCatchDetails(List<Catch> catchDetails) {
-    this.catchDetails = catchDetails;
-  }
-
-  @Override
-  public String toString() {
-    return "Post{" +
-        "title='" + title + '\'' +
-        ", description='" + description + '\'' +
-        ", comments=" + comments +
-        ", catchDetails=" + catchDetails +
-        '}';
-  }
 }

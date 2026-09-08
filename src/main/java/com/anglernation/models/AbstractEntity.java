@@ -1,13 +1,25 @@
 package com.anglernation.models;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
+import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractEntity {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
-  private Timestamp createdAt;
-  private Timestamp updatedAt;
+  @CreatedDate
+  private Instant createdAt;
+  @LastModifiedDate
+  private Instant updatedAt;
 
   public UUID getId() {
     return id;
@@ -17,19 +29,20 @@ public abstract class AbstractEntity {
     this.id = id;
   }
 
-  public Timestamp getCreatedAt() {
+  public Instant getCreatedAt() {
     return createdAt;
   }
 
-  public void setCreatedAt(Timestamp createdAt) {
+  public void setCreatedAt(Instant createdAt) {
     this.createdAt = createdAt;
   }
 
-  public Timestamp getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return updatedAt;
   }
 
-  public void setUpdatedAt(Timestamp updatedAt) {
+  public void setUpdatedAt(Instant updatedAt) {
     this.updatedAt = updatedAt;
   }
+
 }

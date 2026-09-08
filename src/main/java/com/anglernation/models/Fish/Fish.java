@@ -1,22 +1,23 @@
 package com.anglernation.models.Fish;
 
 import com.anglernation.models.AbstractEntity;
+import com.anglernation.models.catches.Catch;
+import jakarta.persistence.*;
 
-
-
+@Entity
+@Table( name = "fish")
 public class Fish extends AbstractEntity {
 
-
+    @Enumerated(EnumType.STRING)
     private FishType fishType;
+    @Column(name = "species")
     private String name;
+    @Column(name = "weight")
     private Double weight;
+    @Column(name = "size")
     private Double size;
 
-    public Fish(FishType fishType, String name, Double weight, Double size) {
-        this.fishType = fishType;
-        this.name = name;
-        this.weight = weight;
-        this.size = size;
+    public Fish(){
     }
 
     public FishType getFishType() {
@@ -51,13 +52,4 @@ public class Fish extends AbstractEntity {
         this.size = size;
     }
 
-    @Override
-    public String toString() {
-        return "Fish{" +
-                "fishType=" + fishType +
-                ", name='" + name + '\'' +
-                ", weight=" + weight +
-                ", size=" + size +
-                '}';
-    }
 }

@@ -8,26 +8,33 @@ import com.anglernation.models.lures.Lure;
 import com.anglernation.models.posts.Post;
 import com.anglernation.models.rods.Rod;
 import com.anglernation.models.users.User;
+import jakarta.persistence.*;
 
+@Entity
+@Table( name = "catches")
 public class Catch extends AbstractEntity {
 
+  @ManyToOne
+  @JoinColumn( name = "location_id" , nullable = false)
   private Location location;
+  @JoinColumn(name = "rod_id" , nullable = true)
+  @ManyToOne
   private Rod rod;
+  @JoinColumn(name = "lure_id", nullable = true)
+  @ManyToOne
   private Lure lure;
+  @JoinColumn(name = "line_id" , nullable = true)
+  @ManyToOne
   private Line line;
+  @JoinColumn(name = "fish_id" , nullable = false)
+  @ManyToOne
   private Fish fish;
-  private Post post;
+  @JoinColumn(name = "angler_id" ,  nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
   private User angler;
 
-  public Catch(Location location, Rod rod, Lure lure, Line line, Fish fish, Post post, User angler) {
-    this.location = location;
-    this.rod = rod;
-    this.lure = lure;
-    this.line = line;
-    this.fish = fish;
-    this.post = post;
-    this.angler = angler;
-  }
+  public Catch(){
+  };
 
   public Location getLocation() {
     return location;
@@ -69,13 +76,6 @@ public class Catch extends AbstractEntity {
     this.fish = fish;
   }
 
-  public Post getPost() {
-    return post;
-  }
-
-  public void setPost(Post post) {
-    this.post = post;
-  }
 
   public User getAngler() {
     return angler;
@@ -85,16 +85,5 @@ public class Catch extends AbstractEntity {
     this.angler = angler;
   }
 
-  @Override
-  public String toString() {
-    return "Catch{" +
-        "location=" + location +
-        ", rod=" + rod +
-        ", lure=" + lure +
-        ", line=" + line +
-        ", fish=" + fish +
-        ", post=" + post +
-        ", angler=" + angler +
-        '}';
-  }
+
 }

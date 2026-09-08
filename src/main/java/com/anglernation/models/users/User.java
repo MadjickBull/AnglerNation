@@ -1,42 +1,55 @@
 package com.anglernation.models.users;
 
+import com.anglernation.models.AbstractEntity;
 import com.anglernation.models.catches.Catch;
 import com.anglernation.models.lines.Line;
 import com.anglernation.models.lures.Lure;
 import com.anglernation.models.posts.Post;
 import com.anglernation.models.rods.Rod;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+@Entity
+@Table(name = "users")
+public class User extends AbstractEntity {
 
+  @Column(name = "user_name", nullable = false, unique = true)
   private String userName;
-  private String firstName;
-  private String lastName;
-  private String password;
-  private String email;
-  private Integer phoneNumber;
 
+  @Column(name = "first_name", nullable = false)
+  private String firstName;
+
+  @Column(name = "last_name", nullable = false)
+  private String lastName;
+
+  @Column(name = "password", nullable = false)
+  private String password;
+
+  @Column(name = "email", nullable = false, unique = true)
+  private String email;
+
+  @Column(name = "phone_number", nullable = false)
+  private String phoneNumber;
+
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Rod> rods = new ArrayList<>();
-  private List<Lure> lure = new ArrayList<>();
+
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Lure> lures = new ArrayList<>();
+
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Line> lines = new ArrayList<>();
+
+  @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Post> posts = new ArrayList<>();
+
+  @OneToMany(mappedBy = "angler", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Catch> catches = new ArrayList<>();
 
-  public User(String userName, String firstName, String lastName, String password, String email, Integer phoneNumber,
-      List<Rod> rods, List<Lure> lure, List<Line> lines, List<Post> posts, List<Catch> catches) {
-    this.userName = userName;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.password = password;
-    this.email = email;
-    this.phoneNumber = phoneNumber;
-    this.rods = rods;
-    this.lure = lure;
-    this.lines = lines;
-    this.posts = posts;
-    this.catches = catches;
+  public User(){
   }
 
   public String getUserName() {
@@ -79,11 +92,11 @@ public class User {
     this.email = email;
   }
 
-  public Integer getPhoneNumber() {
+  public String getPhoneNumber() {
     return phoneNumber;
   }
 
-  public void setPhoneNumber(Integer phoneNumber) {
+  public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
   }
 
@@ -96,11 +109,11 @@ public class User {
   }
 
   public List<Lure> getLure() {
-    return lure;
+    return lures;
   }
 
   public void setLure(List<Lure> lure) {
-    this.lure = lure;
+    this.lures = lure;
   }
 
   public List<Line> getLines() {
@@ -127,20 +140,4 @@ public class User {
     this.catches = catches;
   }
 
-  @Override
-  public String toString() {
-    return "User{" +
-        "userName='" + userName + '\'' +
-        ", firstName='" + firstName + '\'' +
-        ", lastName='" + lastName + '\'' +
-        ", password='" + password + '\'' +
-        ", email='" + email + '\'' +
-        ", phoneNumber=" + phoneNumber +
-        ", rods=" + rods +
-        ", lure=" + lure +
-        ", lines=" + lines +
-        ", posts=" + posts +
-        ", catches=" + catches +
-        '}';
-  }
 }

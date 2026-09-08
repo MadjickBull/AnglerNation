@@ -1,22 +1,29 @@
 package com.anglernation.models.lines;
 
 import com.anglernation.models.AbstractEntity;
+import com.anglernation.models.users.User;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "lines")
 public class Line extends AbstractEntity {
 
+  @Enumerated(EnumType.STRING)
   private LineType lineType;
+  @Column(name = "brand")
   private String name;
+  @Column(name = "diameter")
   private Double diameter;
+  @Column(name = "breaking_strength")
   private Integer breakingStrength;
+  @Column(name = "color")
   private String color;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "owner_id", nullable = false)
+  private User owner;
 
-  public Line(LineType lineType, String name, Double diameter, Integer breakingStrength, String color) {
-    this.lineType = lineType;
-    this.name = name;
-    this.diameter = diameter;
-    this.breakingStrength = breakingStrength;
-    this.color = color;
-  }
+  public Line(){
+  };
 
   public LineType getLineType() {
     return lineType;
@@ -58,14 +65,4 @@ public class Line extends AbstractEntity {
     this.color = color;
   }
 
-  @Override
-  public String toString() {
-    return "Line{" +
-        "lineType=" + lineType +
-        ", name='" + name + '\'' +
-        ", diameter=" + diameter +
-        ", breakingStrength=" + breakingStrength +
-        ", color='" + color + '\'' +
-        '}';
-  }
 }
