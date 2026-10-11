@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/madjickbull/Projects/AnglerNation/webhook-handler/app.py", line 8, in <module>
+    from fastapi import FastAPI, Request, Header, HTTPException, BackgroundTasks
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/fastapi/__init__.py", line 7, in <module>
+    from .applications import FastAPI as FastAPI
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/fastapi/applications.py", line 7, in <module>
+    from fastapi import routing
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/fastapi/routing.py", line 45, in <module>
+    from fastapi import params
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/fastapi/params.py", line 7, in <module>
+    from fastapi.exceptions import FastAPIDeprecationWarning
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/fastapi/exceptions.py", line 5, in <module>
+    from pydantic import BaseModel, create_model
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/pydantic/__init__.py", line 5, in <module>
+    from ._migration import getattr_migration
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/pydantic/_migration.py", line 4, in <module>
+    from pydantic.warnings import PydanticDeprecatedSince20
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/pydantic/warnings.py", line 5, in <module>
+    from .version import version_short
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/pydantic/version.py", line 7, in <module>
+    from pydantic_core import __version__ as __pydantic_core_version__
+  File "/home/madjickbull/.local/share/mise/installs/pipx-hermes-agent/0.19.0/hermes-agent/lib/python3.13/site-packages/pydantic_core/__init__.py", line 8, in <module>
+    from ._pydantic_core import (
+ModuleNotFoundError: No module named 'pydantic_core._pydantic_core'
