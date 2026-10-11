@@ -1,0 +1,263 @@
+documentation_updates:
+  - file: README.md
+    content: |
+      # AnglerNation
+      
+      A comprehensive fishing social platform built with Spring Boot and Java 21. AnglerNation allows anglers to share their catches, track their gear, discover fishing locations, and connect with fellow fishing enthusiasts.
+      
+      ## Project Overview
+      
+      AnglerNation is a full-stack application designed for the fishing community. The backend provides RESTful APIs for managing:
+      - User profiles and authentication
+      - Fishing gear (rods, lures, lines)
+      - Fishing locations and spots
+      - Fish species and catch records
+      - Social features (posts and comments)
+      
+      ## Technical Stack
+      
+      ### Backend
+      - **Language**: Java 21
+      - **Framework**: Spring Boot 3.2.x
+      - **Build Tool**: Maven
+      - **Database**: PostgreSQL (with H2 for testing)
+      - **ORM**: Spring Data JPA
+      - **Mapping**: MapStruct
+      - **Validation**: Jakarta Validation
+      - **Security**: Spring Security with JWT authentication
+      - **API Documentation**: SpringDoc OpenAPI (Swagger UI)
+      - **Testing**: JUnit 5, Mockito, Testcontainers
+      - **Lombok**: For reducing boilerplate code
+      
+      ### Key Features
+      - **Authentication**: JWT-based secure authentication
+      - **Authorization**: Role-based access control
+      - **CRUD Operations**: Complete create, read, update, delete for all entities
+      - **Relationships**: Proper entity relationships (users own gear, catches, posts, etc.)
+      - **Pagination**: Efficient pagination for list endpoints
+      - **Validation**: Input validation using Jakarta Validation annotations
+      - **Error Handling**: Centralized exception handling
+      - **API Documentation**: Auto-generated OpenAPI 3.0 specification
+      - **Testing**: Comprehensive unit and integration tests
+      
+      ## Development Workflow with Hermes Agent
+      
+      This project implements an innovative agentic workflow using GitHub webhooks and the Hermes AI agent system:
+      
+      ### Workflow Description
+      1. **GitHub Issues as Tasks**: Development tasks are tracked as GitHub issues in the AnglerNation repository
+      2. **Webhook Integration**: When issues are reopened (or specific events occur), GitHub sends webhook events to a local Hermes agent instance
+      3. **Agent Delegation**: The Hermes agent receives the webhook, analyzes the issue, and delegates tasks to specialized sub-agents:
+         - **Backend Agent**: Handles REST API implementation, business logic, database layer
+         - **Frontend Agent**: Handles UI/UX components (when applicable)
+         - **Security Agent**: Handles authentication, authorization, and security concerns
+         - **Reporting Agent**: Generates progress reports and documentation
+         - **Review Agent**: Performs quality assurance and code reviews
+      4. **Local Tunneling**: Uses ngrok or similar tunneling service to expose local development endpoints to GitHub webhooks
+      5. **Persistent Learning**: Agent experiences and improvements are saved as skills for future reuse across projects
+      6. **Centralized Logging**: All agent output and logs are stored in each project's `.hermes` directory for centralized monitoring
+      
+      ### Workflow Benefits
+      - **Automated Task Distribution**: Issues automatically trigger appropriate agent responses
+      - **Context-Aware Assistance**: Agents understand project structure and conventions
+      - **Continuous Learning**: Agent improvements persist across sessions and projects
+      - **Reduced Manual Overhead**: Routine coding tasks are handled by specialized agents
+      - **Consistent Implementation**: Agents follow established patterns and best practices
+      - **Transparent Progress**: Detailed logs and reports provide visibility into agent activities
+      
+      ## Project Structure
+      
+      ```
+      src/main/java/com/anglernation/
+      ├── controllers/          # REST API controllers
+      ├── services/             # Business logic services
+      ├── services/repositories# Spring Data JPA repositories
+      ├── models/               # JPA entities
+      ├── dtos/                 # Data Transfer Objects (request/response)
+      ├── mappers/              # MapStruct mappers (entity ↔ DTO)
+      ├── config/               # Configuration classes
+      ├── exceptions/           # Custom exception handling
+      └── security/             # Security configuration and filters
+      
+      src/test/java/com/anglernation/
+      ├── Unit tests for services, controllers, etc.
+      └── Integration tests using Testcontainers
+      ```
+      
+      ## Getting Started
+      
+      ### Prerequisites
+      - Java 21 JDK
+      - Maven 3.8+
+      - PostgreSQL 14+ (for development)
+      - Git
+      
+      ### Setup Instructions
+      
+      1. **Clone the repository**
+         ```bash
+         git clone https://github.com/MadjickBull/AnglerNation.git
+         cd AnglerNation
+         ```
+      
+      2. **Configure PostgreSQL**
+         - Create a database named `anglernation`
+         - Update `src/main/resources/application.yml` with your database credentials:
+           ```yaml
+           spring:
+             datasource:
+               url: jdbc:postgresql://localhost:5432/anglernation
+               username: your_username
+               password: your_password
+             jpa:
+               hibernate:
+                 ddl-auto: update
+           ```
+        
+      3. **Build the project**
+         ```bash
+         mvn clean install
+         ```
+      
+      4. **Run the application**
+         ```bash
+         mvn spring-boot:run
+         ```
+      
+      5. **Access the application**
+         - API: http://localhost:8080
+         - Swagger UI: http://localhost:8080/swagger-ui.html
+         - API Docs: http://localhost:8080/v3/api-docs
+      
+      ## API Documentation
+      
+      Once the application is running, access the interactive API documentation at:
+      - **Swagger UI**: http://localhost:8080/swagger-ui.html
+      - **OpenAPI JSON**: http://localhost:8080/v3/api-docs
+      
+      The API includes endpoints for:
+      - **Authentication**: `/api/auth` (login, register, refresh token)
+      - **Users**: `/api/users` (CRUD operations)
+      - **Rods**: `/api/rods` (CRUD operations)
+      - **Lures**: `/api/lures` (CRUD operations)
+      - **Lines**: `/api/lines` (CRUD operations)
+      - **Locations**: `/api/locations` (CRUD operations)
+      - **Fish**: `/api/fish` (CRUD operations)
+      - **Catches**: `/api/catches` (CRUD operations)
+      - **Posts**: `/api/posts` (CRUD operations)
+      - **Comments**: `/api/comments` (CRUD operations)
+      
+      ## Current Implementation Status
+      
+      ✅ **Completed Components**:
+      - Project structure and build configuration (Maven, Spring Boot)
+      - Database configuration and entity models
+      - JPA repositories for all entities
+      - MapStruct mappers for entity-DTO conversion
+      - Service layer with business logic
+      - REST controllers for all entities
+      - DTOs with validation annotations
+      - Global exception handler
+      - OpenAPI/Swagger configuration
+      - Security configuration with JWT authentication
+      - Comprehensive unit and integration tests
+      
+      🔧 **In Progress**:
+      - Frontend integration (planned)
+      - Advanced search and filtering capabilities
+      - Social features enhancement (likes, shares, follows)
+      - Analytics and statistics features
+      
+      📝 **Planned Features**:
+      - Geolocation integration for fishing spots
+      - Weather API integration for fishing conditions
+      - Fishing log and analytics dashboard
+      - Marketplace for buying/selling gear
+      - Tournament and event organization features
+      
+      ## Testing
+      
+      Run all tests:
+      ```bash
+      mvn test
+      ```
+      
+      Run only unit tests:
+      ```bash
+      mvn test -DskipIntegrationTests
+      ```
+      
+      Run only integration tests:
+      ```bash
+      mvn verify -DskipUnitTests
+      ```
+      
+      Generate test coverage report:
+      ```bash
+      mvn jacoco:report
+      ```
+      Coverage report will be available at `target/site/jacoco/index.html`
+      
+      ## Database Schema
+      
+      The application uses JPA/Hibernate to manage the database schema. Entities include:
+      
+      - **User**: Angler profiles with authentication details
+      - **Rod**: Fishing rods with specifications (type, length, power, action)
+      - **Lure**: Artificial lures with properties (type, buoyancy, weight)
+      - **Line**: Fishing lines with specifications (type, material, strength)
+      - **Location**: Fishing spots with GPS coordinates and visibility settings
+      - **Fish**: Fish species catalog
+      - **Catch**: Records of fishing catches linking user, location, fish, gear
+      - **Post**: Social media-style posts from users
+      - **Comment**: Comments on posts
+      
+      Relationships:
+      - Users have many rods, lures, lines, locations, catches, posts
+      - Catches belong to one user, one location, one fish, and reference gear
+      - Posts belong to one user and have many comments
+      - Comments belong to one user and one post
+      
+      ## Contributing
+      
+      1. Fork the repository
+      2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+      3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+      4. Push to the branch (`git push origin feature/amazing-feature`)
+      5. Open a Pull Request
+      
+      ## License
+      
+      This project is private and proprietary. All rights reserved.
+      
+      ## Contact
+      
+      Project Owner: MadjickBull
+      GitHub: https://github.com/MadjickBull
+      
+      ## Acknowledgments
+      
+      - Spring Boot team for the excellent framework
+      - The open-source community for libraries like MapStruct, Lombok, and Testcontainers
+      - The Hermes AI agent system for enabling automated development workflows
+  - file: CHANGELOG.md
+    content: |
+      # Changelog
+      All notable changes to this project will be documented in this file.
+      
+      ## [Unreleased]
+      ### Added
+      - Complete authentication system with JWT and refresh tokens
+      - Security configuration and filters
+      - Comprehensive README documentation
+      - Unit tests for authentication components
+      
+      ### Changed
+      - Updated project structure documentation
+      - Enhanced getting started instructions
+      
+      ## [0.1.0] - 2026-10-11
+      ### Added
+      - Initial project setup with Spring Boot 3.2.x and Java 21
+      - Basic entity models and repositories
+      - Initial README documentation
