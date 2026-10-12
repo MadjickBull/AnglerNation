@@ -13,18 +13,15 @@ import json
 import logging
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel
+import uuid
 from pathlib import Path
-import hashlib as hashlib_module
 
 app = FastAPI(title="GitHub Webhook Handler for AnglerNation")
 
 # Configuration
 WEBHOOK_SECRET = os.getenv("GITHUB_WEBHOOK_SECRET", "")
-TASK_QUEUE_DIR = Path("/tmp/github_webhook_queue")
-
-# Ensure the task queue directory exists
-TASK_QUEUE_DIR.mkdir(parents=True, exist_ok=True)
+# Queue directory for individual task files (matches queue processor)
+QUEUE_DIR = Path("/tmp/github_webhook_queue")
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -48,23 +45,34 @@ def verify_signature(payload: bytes, signature: str) -> bool:
     return hmac.compare_digest(expected, signature)
 
 def enqueue_task(task_data: dict):
-    """Add task to processing queue as a separate JSON file"""
-    # Create a unique filename based on timestamp and a hash of the task data
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")
-    # Use issue number or pr number or event type for readability
-    issue_num = task_data.get("issue_number", task_data.get("pr_number", "unknown"))
+    """Add task to processing queue as individual JSON file"""
+    # Ensure queue directory exists
+    QUEUE_DIR.mkdir(parents=True, exist_ok=True)
+    
+    # Generate unique filename: timestamp_uuid_event_action.json
+    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    unique_id = str(uuid.uuid4())[:8]
+    
     event = task_data.get("event", "unknown")
-    # Create a hash of the task data to avoid collisions
-    task_str = json.dumps(task_data, sort_keys=True)
-    task_hash = hashlib_module.md5(task_str.encode()).hexdigest()[:8]
-    filename = f"{timestamp}_{event}_{issue_num}_{task_hash}.json"
-    filepath = TASK_QUEUE_DIR / filename
-    # Write the task data to a temporary file and then rename atomically
-    temp_filepath = filepath.with_suffix(".json.tmp")
-    with open(temp_filepath, "w") as f:
-        json.dump(task_data, f, indent=2)
-    temp_filepath.rename(filepath)
-    logger.info(f"Enqueued task: {task_data.get('event')} - #{task_data.get('issue_number') or task_data.get('pr_number')}")
+    issue_number = task_data.get("issue_number") or task_data.get("pr_number") or "0"
+    
+    filename = f"{timestamp}_{unique_id}_{event}_{issue_number}.json"
+    task_file = QUEUE_DIR / filename
+    
+    # Add metadata
+    task_data_with_meta = {
+        **task_data,
+        "enqueued_at": datetime.utcnow().isoformat() + "Z",
+        "github_delivery_id": task_data.get("github_delivery_id", str(uuid.uuid4()))
+    }
+    
+    # Write task file atomically (write to temp then rename)
+    temp_file = task_file.with_suffix('.json.tmp')
+    with open(temp_file, 'w') as f:
+        json.dump(task_data_with_meta, f, indent=2)
+    temp_file.rename(task_file)
+    
+    logger.info(f"Enqueued task: {event} - #{issue_number} -> {filename}")
 
 def process_issue_opened(payload: dict):
     """Handle issues.opened event"""
@@ -249,16 +257,15 @@ async def github_webhook(
 async def health():
     return {"status": "ok", "service": "github-webhook"}
 
+# Legacy endpoints for compatibility (return empty data since we now use file-based queue)
 @app.get("/queue")
 async def get_queue():
-    """View current task queue"""
-    # Return empty queue for compatibility - the real queue is filesystem-based
+    """View current task queue - legacy endpoint"""
     return {"tasks": [], "processed": []}
 
 @app.post("/queue/process")
 async def process_queue():
-    """Process queued tasks (called by CEO orchestrator)"""
-    # This endpoint is not used with filesystem-based queue
+    """Process queued tasks - legacy endpoint (no-op)"""
     return {"processed": 0, "tasks": []}
 
 if __name__ == "__main__":
