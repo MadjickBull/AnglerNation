@@ -19,8 +19,8 @@ public class Location extends AbstractEntity {
   @Column(name = "latitude" , nullable = true)
   private Double latitude;
 
-  public Location(){
-  };
+  public Location() {
+  }
 
   public String getName() {
     return name;
@@ -54,6 +54,11 @@ public class Location extends AbstractEntity {
     this.latitude = latitude;
   }
 
+  public LocationVisibility getVisibility() {
+    return visibility;
+  }
+
+  public void setVisibility(LocationVisibility visibility) {
+    this.visibility = visibility;
+  }
 }
-
-

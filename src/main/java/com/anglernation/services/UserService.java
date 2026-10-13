@@ -2,6 +2,7 @@ package com.anglernation.services;
 
 import com.anglernation.dtos.CreateUserRequest;
 import com.anglernation.dtos.UpdateUserRequest;
+import com.anglernation.dtos.UserDto;
 import com.anglernation.models.lines.Line;
 import com.anglernation.models.lures.Lure;
 import com.anglernation.models.rods.Rod;
@@ -17,104 +18,115 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
-  private UserRepo userRepo;
-  private LureRepo lureRepo;
-  private RodRepo rodRepo;
-  private LineRepo lineRepo;
+    private final UserRepo userRepo;
+    private final LureRepo lureRepo;
+    private final RodRepo rodRepo;
+    private final LineRepo lineRepo;
 
-  public UserService(UserRepo userRepo, LureRepo lureRepo, RodRepo rodRepo, LineRepo lineRepo) {
-    this.userRepo = userRepo;
-    this.lureRepo = lureRepo;
-    this.rodRepo = rodRepo;
-    this.lineRepo = lineRepo;
-  }
+    public UserService(UserRepo userRepo, LureRepo lureRepo, RodRepo rodRepo, LineRepo lineRepo) {
+        this.userRepo = userRepo;
+        this.lureRepo = lureRepo;
+        this.rodRepo = rodRepo;
+        this.lineRepo = lineRepo;
+    }
 
-  private User getUserOrThrow(UUID userId) {
-    return userRepo.findById(userId)
-        .orElseThrow(() -> new EntityNotFoundException("User not found"));
-  }
+    private User getUserOrThrow(UUID userId) {
+        return userRepo.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    }
 
-  @Transactional
-  public User createUser(CreateUserRequest userRequest) {
+    @Transactional
+    public UserDto createUser(CreateUserRequest userRequest) {
 
-    validateUsername(userRequest.userName(), null);
-    validateEmail(userRequest.email(), null);
+        validateUsername(userRequest.userName(), null);
+        validateEmail(userRequest.email(), null);
 
-    User user = new User();
-    user.setFirstName(userRequest.firstName());
-    user.setLastName(userRequest.lastName());
-    user.setEmail(userRequest.email());
-    user.setPhoneNumber(userRequest.phoneNumber());
-    user.setPassword(userRequest.passWord());
-    user.setUserName(userRequest.userName());
-    userRepo.save(user);
-    return user;
-  }
+        User user = new User();
+        user.setFirstName(userRequest.firstName());
+        user.setLastName(userRequest.lastName());
+        user.setEmail(userRequest.email());
+        user.setPhoneNumber(userRequest.phoneNumber());
+        user.setPassword(userRequest.passWord());
+        user.setUserName(userRequest.userName());
+        userRepo.save(user);
+        return toDto(user);
+    }
 
-  @Transactional
-  public User updateUser(UpdateUserRequest userRequest, UUID userId) {
+    @Transactional
+    public UserDto updateUser(UpdateUserRequest userRequest, UUID userId) {
 
-    validateUsername(userRequest.userName(), userId);
-    validateEmail(userRequest.email(), userId);
+        validateUsername(userRequest.userName(), userId);
+        validateEmail(userRequest.email(), userId);
 
-    User user = getUserById(userId);
-    Optional.ofNullable(userRequest.userName()).ifPresent(user::setUserName);
-    Optional.ofNullable(userRequest.firstName()).ifPresent(user::setFirstName);
-    Optional.ofNullable(userRequest.lastName()).ifPresent(user::setLastName);
-    Optional.ofNullable(userRequest.email()).ifPresent(user::setEmail);
-    Optional.ofNullable(userRequest.phoneNumber()).ifPresent(user::setPhoneNumber);
-    Optional.ofNullable(userRequest.passWord()).ifPresent(user::setPassword);
-    return userRepo.save(user);
-  }
+        User user = getUserOrThrow(userId);
+        Optional.ofNullable(userRequest.userName()).ifPresent(user::setUserName);
+        Optional.ofNullable(userRequest.firstName()).ifPresent(user::setFirstName);
+        Optional.ofNullable(userRequest.lastName()).ifPresent(user::setLastName);
+        Optional.ofNullable(userRequest.email()).ifPresent(user::setEmail);
+        Optional.ofNullable(userRequest.phoneNumber()).ifPresent(user::setPhoneNumber);
+        Optional.ofNullable(userRequest.passWord()).ifPresent(user::setPassword);
+        return toDto(userRepo.save(user));
+    }
 
-  @Transactional
-  public User deleteUser(UUID userId) {
-    User user = getUserById(userId);
-    userRepo.delete(user);
-    return user;
-  }
+    @Transactional
+    public UserDto deleteUser(UUID userId) {
+        User user = getUserOrThrow(userId);
+        userRepo.delete(user);
+        return toDto(user);
+    }
 
-  private void validateUsername(String userName, UUID userId) {
-    userRepo.findByUserName(userName).ifPresent(existing -> {
-      if (!existing.getId().equals(userId)) {
-        throw new EntityNotFoundException("Username already exists");
-      }
-    });
-  }
+    public UserDto getUserById(UUID userId) {
+        return toDto(getUserOrThrow(userId));
+    }
 
-  private void validateEmail(String email, UUID userId) {
+    public List<UserDto> getAllUsers() {
+        return userRepo.findAll().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
 
-    userRepo.findByEmail(email).ifPresent(existing -> {
-      if (!existing.getId().equals(userId)) {
-        throw new EntityNotFoundException("Email already exists");
-      }
-    });
+    private void validateUsername(String userName, UUID userId) {
+        userRepo.findByUserName(userName).ifPresent(existing -> {
+            if (!existing.getId().equals(userId)) {
+                throw new EntityNotFoundException("Username already exists");
+            }
+        });
+    }
 
-  }
+    private void validateEmail(String email, UUID userId) {
+        userRepo.findByEmail(email).ifPresent(existing -> {
+            if (!existing.getId().equals(userId)) {
+                throw new EntityNotFoundException("Email already exists");
+            }
+        });
+    }
 
-  private User getUserById(UUID userId) {
-    return getUserOrThrow(userId);
-  }
+    public List<Lure> getUserLure(UUID userId) {
+        return lureRepo.findByOwnerId(userId);
+    }
 
-  private List<User> getAllUsers() {
-    return userRepo.findAll();
-  }
+    public List<Rod> getUserRod(UUID userId) {
+        return rodRepo.findByOwnerId(userId);
+    }
 
-  private List<Lure> getUserLure(UUID userId) {
+    public List<Line> getUserLines(UUID userId) {
+        return lineRepo.findByOwnerId(userId);
+    }
 
-    return lureRepo.findAll();
-  }
-
-  private List<Rod> getUserRod(UUID userId) {
-    return rodRepo.findAll();
-  }
-
-  private List<Line> getUserLines(UUID userId) {
-    return lineRepo.findAll();
-  }
-
+    private UserDto toDto(User user) {
+        return new UserDto(
+                user.getId(),
+                user.getUserName(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.getCreatedAt()
+        );
+    }
 }

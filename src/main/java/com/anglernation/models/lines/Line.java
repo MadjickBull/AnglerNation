@@ -22,8 +22,8 @@ public class Line extends AbstractEntity {
   @JoinColumn(name = "owner_id", nullable = false)
   private User owner;
 
-  public Line(){
-  };
+  public Line() {
+  }
 
   public LineType getLineType() {
     return lineType;
@@ -65,4 +65,11 @@ public class Line extends AbstractEntity {
     this.color = color;
   }
 
+  public User getOwner() {
+    return owner;
+  }
+
+  public void setOwner(User owner) {
+    this.owner = owner;
+  }
 }
