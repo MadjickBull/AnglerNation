@@ -359,12 +359,6 @@ Agents automatically:
 
 ---
 
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
----
-
 ## 🙏 Acknowledgments
 
 - **Hermes Agent** by Nous Research for the agent framework
@@ -381,5 +375,3 @@ MIT License - see [LICENSE](LICENSE) for details.
 - **Webhook Endpoint**: `https://your-domain.com/webhooks/github` (configure in GitHub repo settings)
 
 ---
-
-*Generated as part of GitHub Issue #14: "Write a comprehensive Readme for this project"*
