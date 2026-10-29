@@ -1,0 +1,34 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_rods"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Rods" />
+    <item
+        android:id="@+id/navigation_lures"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Lures" />
+    <item
+        android:id="@+id/navigation_lines"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Lines" />
+    <item
+        android:id="@+id/navigation_locations"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Locations" />
+    <item
+        android:id="@+id/navigation_fish"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Fish" />
+    <item
+        android:id="@+id/navigation_catches"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Catches" />
+    <item
+        android:id="@+id/navigation_posts"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Posts" />
+    <item
+        android:id="@+id/navigation_comments"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Comments" />
+</menu>

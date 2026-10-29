@@ -13,6 +13,7 @@ import com.anglernation.services.repositories.RodRepo;
 import com.anglernation.services.repositories.UserRepo;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,12 +28,14 @@ public class UserService {
     private final LureRepo lureRepo;
     private final RodRepo rodRepo;
     private final LineRepo lineRepo;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserService(UserRepo userRepo, LureRepo lureRepo, RodRepo rodRepo, LineRepo lineRepo) {
         this.userRepo = userRepo;
         this.lureRepo = lureRepo;
         this.rodRepo = rodRepo;
         this.lineRepo = lineRepo;
+        this.passwordEncoder = new BCryptPasswordEncoder(12);
     }
 
     private User getUserOrThrow(UUID userId) {
@@ -51,7 +54,7 @@ public class UserService {
         user.setLastName(userRequest.lastName());
         user.setEmail(userRequest.email());
         user.setPhoneNumber(userRequest.phoneNumber());
-        user.setPassword(userRequest.passWord());
+        user.setPassword(passwordEncoder.encode(userRequest.passWord()));
         user.setUserName(userRequest.userName());
         userRepo.save(user);
         return toDto(user);
@@ -69,7 +72,9 @@ public class UserService {
         Optional.ofNullable(userRequest.lastName()).ifPresent(user::setLastName);
         Optional.ofNullable(userRequest.email()).ifPresent(user::setEmail);
         Optional.ofNullable(userRequest.phoneNumber()).ifPresent(user::setPhoneNumber);
-        Optional.ofNullable(userRequest.passWord()).ifPresent(user::setPassword);
+        Optional.ofNullable(userRequest.passWord()).ifPresent(newPassword -> {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        });
         return toDto(userRepo.save(user));
     }
 

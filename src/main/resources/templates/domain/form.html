@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{base :: base}">
+<head>
+    <title th:text="${title} + ' | AnglerNation'">Form</title>
+</head>
+<body>
+    <div th:replace="fragments/layout :: navbar"></div>
+    <main class="container-fluid py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 th:text="${title}"><i class="bi" th:class="${icon} me-2"></i>Form</h1>
+            <a th:href="@{/{domain}(domain=${domain})}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Cancel
+            </a>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Item Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/{domain}(domain=${domain})}" method="post" th:object="${item}" class="needs-validation" novalidate>
+                            <input type="hidden" name="id" th:value="*{id}">
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="name">Name <span class="text-danger">*</span></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="name" name="name" th:value="*{name}" required>
+                                    <div class="invalid-feedback">Name is required</div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="description">Description</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="description" name="description" rows="3" th:value="*{description}"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Domain-specific fields -->
+                            <div class="row mb-3" th:if="${domain == 'rods'}">
+                                <label class="col-sm-2 col-form-label" for="rodType">Rod Type</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="rodType" name="rodType" th:value="*{rodType}">
+                                        <option value="">Select type</option>
+                                        <option value="SPINNING">Spinning</option>
+                                        <option value="CASTING">Casting</option>
+                                        <option value="FLY">Fly</option>
+                                        <option value="TROLLING">Trolling</option>
+                                        <option value="SURF">Surf</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" th:if="${domain == 'rods'}">
+                                <label class="col-sm-2 col-form-label" for="rodPower">Rod Power</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="rodPower" name="rodPower" th:value="*{rodPower}">
+                                        <option value="">Select power</option>
+                                        <option value="ULTRA_LIGHT">Ultra Light</option>
+                                        <option value="LIGHT">Light</option>
+                                        <option value="MEDIUM_LIGHT">Medium Light</option>
+                                        <option value="MEDIUM">Medium</option>
+                                        <option value="MEDIUM_HEAVY">Medium Heavy</option>
+                                        <option value="HEAVY">Heavy</option>
+                                        <option value="EXTRA_HEAVY">Extra Heavy</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" th:if="${domain == 'rods'}">
+                                <label class="col-sm-2 col-form-label" for="rodAction">Rod Action</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="rodAction" name="rodAction" th:value="*{rodAction}">
+                                        <option value="">Select action</option>
+                                        <option value="FAST">Fast</option>
+                                        <option value="MODERATE_FAST">Moderate Fast</option>
+                                        <option value="MODERATE">Moderate</option>
+                                        <option value="SLOW">Slow</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" th:if="${domain == 'lures'}">
+                                <label class="col-sm-2 col-form-label" for="lureType">Lure Type</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="lureType" name="lureType" th:value="*{lureType}">
+                                        <option value="">Select type</option>
+                                        <option value="CRANKBAIT">Crankbait</option>
+                                        <option value="JERKBAIT">Jerkbait</option>
+                                        <option value="TOPWATER">Topwater</option>
+                                        <option value="SPINNERBAIT">Spinnerbait</option>
+                                        <option value="SOFT_PLASTIC">Soft Plastic</option>
+                                        <option value="JIG">Jig</option>
+                                        <option value="SPOON">Spoon</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" th:if="${domain == 'lures'}">
+                                <label class="col-sm-2 col-form-label" for="lureBuoyancy">Buoyancy</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="lureBuoyancy" name="lureBuoyancy" th:value="*{lureBuoyancy}">
+                                        <option value="">Select buoyancy</option>
+                                        <option value="FLOATING">Floating</option>
+                                        <option value="SUSPENDING">Suspending</option>
+                                        <option value="SINKING">Sinking</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" th:if="${domain == 'lines'}">
+                                <label class="col-sm-2 col-form-label" for="lineType">Line Type</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="lineType" name="lineType" th:value="*{lineType}">
+                                        <option value="">Select type</option>
+                                        <option value="MONOFILAMENT">Monofilament</option>
+                                        <option value="FLUOROCARBON">Fluorocarbon</option>
+                                        <option value="BRAIDED">Braided</option>
+                                        <option value="COPOLYMER">Copolymer</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" th:if="${domain == 'locations'}">
+                                <label class="col-sm-2 col-form-label" for="locationVisibility">Visibility</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="locationVisibility" name="locationVisibility" th:value="*{locationVisibility}">
+                                        <option value="">Select visibility</option>
+                                        <option value="PUBLIC">Public</option>
+                                        <option value="PRIVATE">Private</option>
+                                        <option value="SHARED">Shared</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" th:if="${domain == 'fish'}">
+                                <label class="col-sm-2 col-form-label" for="fishType">Fish Type</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="fishType" name="fishType" th:value="*{fishType}">
+                                        <option value="">Select type</option>
+                                        <option value="FRESHWATER">Freshwater</option>
+                                        <option value="SALTWATER">Saltwater</option>
+                                        <option value="ANADROMOUS">Anadromous</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" th:if="${domain == 'catches'}">
+                                <label class="col-sm-2 col-form-label" for="weight">Weight (lbs)</label>
+                                <div class="col-sm-10">
+                                    <input type="number" step="0.01" min="0" class="form-control" id="weight" name="weight" th:value="*{weight}" placeholder="Weight in lbs">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" th:if="${domain == 'catches'}">
+                                <label class="col-sm-2 col-form-label" for="length">Length (in)</label>
+                                <div class="col-sm-10">
+                                    <input type="number" step="0.1" min="0" class="form-control" id="length" name="length" th:value="*{length}" placeholder="Length in inches">
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <a th:href="@{/{domain}(domain=${domain})}" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check me-1"></i>Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/layout :: footer"></footer>
+    <script>
+        // Bootstrap validation
+        (function() {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+</body>
+</html>

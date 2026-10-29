@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{base :: base}">
+<head>
+    <title th:text="${title}">Dashboard</title>
+</head>
+<body>
+    <div th:replace="fragments/layout :: navbar"></div>
+    <main class="container-fluid py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="bi bi-house me-2"></i>Dashboard</h1>
+            <span class="badge bg-primary fs-6">9 Domains Active</span>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card bg-primary text-white h-100">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="bi bi-vector-pen me-1"></i>Rods</h6>
+                        <p class="card-text fs-3" th:text="${stats?.rods ?: '0'}">0</p>
+                        <a href="/rods" class="btn btn-sm btn-light">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card bg-success text-white h-100">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="bi bi-bug me-1"></i>Lures</h6>
+                        <p class="card-text fs-3" th:text="${stats?.lures ?: '0'}">0</p>
+                        <a href="/lures" class="btn btn-sm btn-light">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card bg-info text-white h-100">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="bi bi-slash-circle me-1"></i>Lines</h6>
+                        <p class="card-text fs-3" th:text="${stats?.lines ?: '0'}">0</p>
+                        <a href="/lines" class="btn btn-sm btn-light">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card bg-warning text-dark h-100">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="bi bi-geo-alt me-1"></i>Locations</h6>
+                        <p class="card-text fs-3" th:text="${stats?.locations ?: '0'}">0</p>
+                        <a href="/locations" class="btn btn-sm btn-dark">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card bg-danger text-white h-100">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="bi bi-trophy me-1"></i>Fish</h6>
+                        <p class="card-text fs-3" th:text="${stats?.fish ?: '0'}">0</p>
+                        <a href="/fish" class="btn btn-sm btn-light">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card bg-secondary text-white h-100">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="bi bi-journal-check me-1"></i>Catches</h6>
+                        <p class="card-text fs-3" th:text="${stats?.catches ?: '0'}">0</p>
+                        <a href="/catches" class="btn btn-sm btn-light">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card bg-dark text-white h-100">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="bi bi-chat-left-text me-1"></i>Posts</h6>
+                        <p class="card-text fs-3" th:text="${stats?.posts ?: '0'}">0</p>
+                        <a href="/posts" class="btn btn-sm btn-light">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card bg-info text-white h-100">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="bi bi-chat me-1"></i>Comments</h6>
+                        <p class="card-text fs-3" th:text="${stats?.comments ?: '0'}">0</p>
+                        <a href="/comments" class="btn btn-sm btn-light">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="/rods/new" class="btn btn-outline-primary"><i class="bi bi-plus me-1"></i>Add Rod</a>
+                            <a href="/lures/new" class="btn btn-outline-success"><i class="bi bi-plus me-1"></i>Add Lure</a>
+                            <a href="/lines/new" class="btn btn-outline-info"><i class="bi bi-plus me-1"></i>Add Line</a>
+                            <a href="/locations/new" class="btn btn-outline-warning"><i class="bi bi-plus me-1"></i>Add Location</a>
+                            <a href="/fish/new" class="btn btn-outline-danger"><i class="bi bi-plus me-1"></i>Add Fish</a>
+                            <a href="/catches/new" class="btn btn-outline-secondary"><i class="bi bi-plus me-1"></i>Log Catch</a>
+                            <a href="/posts/new" class="btn btn-outline-dark"><i class="bi bi-plus me-1"></i>Create Post</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/layout :: footer"></footer>
+</body>
+</html>
