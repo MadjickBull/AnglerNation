@@ -41,12 +41,12 @@ public class RodService {
         User owner = getUserOrThrow(ownerId);
 
         Rod rod = new Rod();
-        rod.setRodType(request.rodType());
-        rod.setName(request.name());
-        rod.setLength(request.length());
-        rod.setWeight(request.weight());
-        rod.setRodPower(request.rodPower());
-        rod.setRodAction(request.rodAction());
+        rod.setRodType(request.getRodType());
+        rod.setName(request.getName());
+        rod.setLength(request.getLength());
+        rod.setWeight(request.getWeight());
+        rod.setRodPower(request.getRodPower());
+        rod.setRodAction(request.getRodAction());
         rod.setOwner(owner);
 
         rodRepo.save(rod);
@@ -74,12 +74,12 @@ public class RodService {
     public RodDto updateRod(UUID rodId, UpdateRodRequest request) {
         Rod rod = getRodOrThrow(rodId);
 
-        if (request.rodType() != null) rod.setRodType(request.rodType());
-        if (request.name() != null) rod.setName(request.name());
-        if (request.length() != null) rod.setLength(request.length());
-        if (request.weight() != null) rod.setWeight(request.weight());
-        if (request.rodPower() != null) rod.setRodPower(request.rodPower());
-        if (request.rodAction() != null) rod.setRodAction(request.rodAction());
+        if (request.getRodType() != null) rod.setRodType(request.getRodType());
+        if (request.getName() != null) rod.setName(request.getName());
+        if (request.getLength() != null) rod.setLength(request.getLength());
+        if (request.getWeight() != null) rod.setWeight(request.getWeight());
+        if (request.getRodPower() != null) rod.setRodPower(request.getRodPower());
+        if (request.getRodAction() != null) rod.setRodAction(request.getRodAction());
 
         return toDto(rodRepo.save(rod));
     }
@@ -92,15 +92,15 @@ public class RodService {
     }
 
     private RodDto toDto(Rod rod) {
-        return new RodDto(
-                rod.getId(),
-                rod.getRodType(),
-                rod.getName(),
-                rod.getLength(),
-                rod.getWeight(),
-                rod.getRodPower(),
-                rod.getRodAction(),
-                rod.getOwner().getId()
-        );
+        RodDto dto = new RodDto();
+        dto.setId(rod.getId());
+        dto.setRodType(rod.getRodType());
+        dto.setName(rod.getName());
+        dto.setLength(rod.getLength());
+        dto.setWeight(rod.getWeight());
+        dto.setRodPower(rod.getRodPower());
+        dto.setRodAction(rod.getRodAction());
+        dto.setOwnerId(rod.getOwner().getId());
+        return dto;
     }
 }

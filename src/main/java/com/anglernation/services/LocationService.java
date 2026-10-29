@@ -31,11 +31,11 @@ public class LocationService {
     @Transactional
     public LocationDto createLocation(CreateLocationRequest request) {
         Location location = new Location();
-        location.setName(request.name());
-        location.setVisibility(request.visibility());
-        location.setAltitude(request.altitude());
-        location.setLongitude(request.longitude());
-        location.setLatitude(request.latitude());
+        location.setName(request.getName());
+        location.setVisibility(request.getVisibility());
+        location.setAltitude(request.getAltitude());
+        location.setLongitude(request.getLongitude());
+        location.setLatitude(request.getLatitude());
 
         locationRepo.save(location);
         return toDto(location);
@@ -55,11 +55,11 @@ public class LocationService {
     public LocationDto updateLocation(UUID locationId, UpdateLocationRequest request) {
         Location location = getLocationOrThrow(locationId);
 
-        if (request.name() != null) location.setName(request.name());
-        if (request.visibility() != null) location.setVisibility(request.visibility());
-        if (request.altitude() != null) location.setAltitude(request.altitude());
-        if (request.longitude() != null) location.setLongitude(request.longitude());
-        if (request.latitude() != null) location.setLatitude(request.latitude());
+        if (request.getName() != null) location.setName(request.getName());
+        if (request.getVisibility() != null) location.setVisibility(request.getVisibility());
+        if (request.getAltitude() != null) location.setAltitude(request.getAltitude());
+        if (request.getLongitude() != null) location.setLongitude(request.getLongitude());
+        if (request.getLatitude() != null) location.setLatitude(request.getLatitude());
 
         return toDto(locationRepo.save(location));
     }
@@ -72,13 +72,13 @@ public class LocationService {
     }
 
     private LocationDto toDto(Location location) {
-        return new LocationDto(
-                location.getId(),
-                location.getName(),
-                location.getVisibility(),
-                location.getAltitude(),
-                location.getLongitude(),
-                location.getLatitude()
-        );
+        LocationDto dto = new LocationDto();
+        dto.setId(location.getId());
+        dto.setName(location.getName());
+        dto.setVisibility(location.getVisibility());
+        dto.setAltitude(location.getAltitude());
+        dto.setLongitude(location.getLongitude());
+        dto.setLatitude(location.getLatitude());
+        return dto;
     }
 }

@@ -41,8 +41,8 @@ public class PostService {
         User author = getUserOrThrow(authorId);
 
         Post post = new Post();
-        post.setTitle(request.title());
-        post.setDescription(request.description());
+        post.setTitle(request.getTitle());
+        post.setDescription(request.getDescription());
         post.setAuthor(author);
 
         postRepo.save(post);
@@ -70,8 +70,8 @@ public class PostService {
     public PostDto updatePost(UUID postId, UpdatePostRequest request) {
         Post post = getPostOrThrow(postId);
 
-        if (request.title() != null) post.setTitle(request.title());
-        if (request.description() != null) post.setDescription(request.description());
+        if (request.getTitle() != null) post.setTitle(request.getTitle());
+        if (request.getDescription() != null) post.setDescription(request.getDescription());
 
         return toDto(postRepo.save(post));
     }
@@ -84,13 +84,13 @@ public class PostService {
     }
 
     private PostDto toDto(Post post) {
-        return new PostDto(
-                post.getId(),
-                post.getTitle(),
-                post.getDescription(),
-                post.getAuthor().getId(),
-                post.getCreatedAt(),
-                post.getUpdatedAt()
-        );
+        PostDto dto = new PostDto();
+        dto.setId(post.getId());
+        dto.setTitle(post.getTitle());
+        dto.setDescription(post.getDescription());
+        dto.setAuthorId(post.getAuthor().getId());
+        dto.setCreatedAt(post.getCreatedAt());
+        dto.setUpdatedAt(post.getUpdatedAt());
+        return dto;
     }
 }

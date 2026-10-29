@@ -41,11 +41,11 @@ public class LineService {
         User owner = getUserOrThrow(ownerId);
 
         Line line = new Line();
-        line.setLineType(request.lineType());
-        line.setName(request.name());
-        line.setDiameter(request.diameter());
-        line.setBreakingStrength(request.breakingStrength());
-        line.setColor(request.color());
+        line.setLineType(request.getLineType());
+        line.setName(request.getName());
+        line.setDiameter(request.getDiameter());
+        line.setBreakingStrength(request.getBreakingStrength());
+        line.setColor(request.getColor());
         line.setOwner(owner);
 
         lineRepo.save(line);
@@ -73,11 +73,11 @@ public class LineService {
     public LineDto updateLine(UUID lineId, UpdateLineRequest request) {
         Line line = getLineOrThrow(lineId);
 
-        if (request.lineType() != null) line.setLineType(request.lineType());
-        if (request.name() != null) line.setName(request.name());
-        if (request.diameter() != null) line.setDiameter(request.diameter());
-        if (request.breakingStrength() != null) line.setBreakingStrength(request.breakingStrength());
-        if (request.color() != null) line.setColor(request.color());
+        if (request.getLineType() != null) line.setLineType(request.getLineType());
+        if (request.getName() != null) line.setName(request.getName());
+        if (request.getDiameter() != null) line.setDiameter(request.getDiameter());
+        if (request.getBreakingStrength() != null) line.setBreakingStrength(request.getBreakingStrength());
+        if (request.getColor() != null) line.setColor(request.color());
 
         return toDto(lineRepo.save(line));
     }
@@ -90,14 +90,14 @@ public class LineService {
     }
 
     private LineDto toDto(Line line) {
-        return new LineDto(
-                line.getId(),
-                line.getLineType(),
-                line.getName(),
-                line.getDiameter(),
-                line.getBreakingStrength(),
-                line.getColor(),
-                line.getOwner().getId()
-        );
+        LineDto dto = new LineDto();
+        dto.setId(line.getId());
+        dto.setLineType(line.getLineType());
+        dto.setName(line.getName());
+        dto.setDiameter(line.getDiameter());
+        dto.setBreakingStrength(line.getBreakingStrength());
+        dto.setColor(line.getColor());
+        dto.setOwnerId(line.getOwner().getId());
+        return dto;
     }
 }
