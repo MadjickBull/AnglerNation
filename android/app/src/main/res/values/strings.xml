@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">AnglerNation</string>
+    <string name="rods">Rods</string>
+    <string name="lures">Lures</string>
+    <string name="lines">Lines</string>
+    <string name="locations">Locations</string>
+    <string name="fish">Fish</string>
+    <string name="catches">Catches</string>
+    <string name="posts">Posts</string>
+    <string name="comments">Comments</string>
+</resources>

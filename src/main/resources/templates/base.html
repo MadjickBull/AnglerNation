@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/layout :: head">
+    <title>AnglerNation</title>
+</head>
+<body>
+    <div th:replace="fragments/layout :: navbar"></div>
+    <main class="container-fluid py-4" th:replace="fragments/layout :: content">
+        <div class="text-center py-5">
+            <h1>AnglerNation</h1>
+            <p class="lead">Fishing gear & catch tracking platform</p>
+        </div>
+    </main>
+    <footer th:replace="fragments/layout :: footer"></footer>
+</body>
+</html>
