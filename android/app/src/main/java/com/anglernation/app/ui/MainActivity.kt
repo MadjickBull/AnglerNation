@@ -3,131 +3,73 @@ package com.anglernation.app.ui
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.DefaultItemAnimator
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.KotlinJsonAdapterFactory
-import com.squareup.retrofit2.Retrofit
-import com.squareup.retrofit2.converter.moshi.MoshiConverterFactory
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
+import androidx.navigation.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.anglernation.app.ui.auth.AuthRepository
+import com.anglernation.app.ui.fragments.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.lifecycleScope
 import kotlinx.coroutines.launch
-import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var api: AnglerNationApi
-    private lateinit var rodAdapter: RodAdapter
-    private var rodJob: Job? = null
+    private lateinit var authRepository: AuthRepository
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Use ViewBinding instead of findViewById
+
+        // Use ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup toolbar
-        binding.toolbar.setTitle("AnglerNation")
-        setSupportActionBar(binding.toolbar)
+        // Initialize API
+        api = AnglerNationApi.create()
 
-        // Initialize API and load data
-        api = createApi()
-        loadRods()
+        // Initialize auth repository
+        authRepository = AuthRepository(requireApplication())
+
+        // Check authentication - redirect to login if not authenticated
+        if (!authRepository.isAuthenticated()) {
+            // Navigate to login fragment
+            val navHostFragment = supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            navController = navHostFragment.navController
+            navController.navigate(R.id.nav_login)
+        }
+
+        // Setup navigation
+        setupNavigation()
 
         // Setup bottom navigation
         setupBottomNavigation()
+    }
 
-        // Setup RecyclerView
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.itemAnimator = DefaultItemAnimator()
-        binding.recyclerView.adapter = RodAdapter(emptyList()) { rod ->
-            runOnUiThread {
-                Toast.makeText(this, "Rod: ${rod.name}", Toast.LENGTH_SHORT).show()
-            }
-        }
+    private fun setupNavigation() {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
+        // Setup action bar with nav controller
+        setupActionBarWithNavController(navController, binding.toolbar)
+
+        // Setup bottom navigation with nav controller
+        setupWithNavController(binding.bottomNavigation, navController)
     }
 
     private fun setupBottomNavigation() {
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_rods -> {
-                    binding.recyclerView.visibility = android.view.View.VISIBLE
-                    binding.toolbar.title = "Rods"
-                    loadRods()
-                    true
-                }
-                R.id.navigation_lures -> {
-                    binding.recyclerView.visibility = android.view.View.VISIBLE
-                    binding.toolbar.title = "Lures"
-                    true
-                }
-                R.id.navigation_lines -> {
-                    binding.recyclerView.visibility = android.view.View.VISIBLE
-                    binding.toolbar.title = "Lines"
-                    true
-                }
-                R.id.navigation_locations -> {
-                    binding.recyclerView.visibility = android.view.View.VISIBLE
-                    binding.toolbar.title = "Locations"
-                    true
-                }
-                R.id.navigation_fish -> {
-                    binding.recyclerView.visibility = android.view.View.VISIBLE
-                    binding.toolbar.title = "Fish"
-                    true
-                }
-                R.id.navigation_catches -> {
-                    binding.recyclerView.visibility = android.view.View.VISIBLE
-                    binding.toolbar.title = "Catches"
-                    true
-                }
-                R.id.navigation_posts -> {
-                    binding.recyclerView.visibility = android.view.View.VISIBLE
-                    binding.toolbar.title = "Posts"
-                    true
-                }
-                R.id.navigation_comments -> {
-                    binding.recyclerView.visibility = android.view.View.VISIBLE
-                    binding.toolbar.title = "Comments"
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
-    private fun loadRods() {
-        if (rodJob != null) rodJob.cancel()
-
-        rodJob = lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val rods = api.getRods()
-                lifecycleScope.launch(Dispatchers.Main) {
-                    val adapter = binding.recyclerView.adapter as RodAdapter
-                    adapter.copy(rodList = rods) { rod ->
-                        runOnUiThread {
-                            Toast.makeText(this, "Rod: ${rod.name}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    binding.recyclerView.adapter = adapter
-                }
-            } catch (e: Exception) {
-                runOnUiThread {
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-                Log.e("MainActivity", "Failed to load rods", e)
-            }
-        }
+        // Bottom navigation is handled by the Navigation Component via setupWithNavController
+        // The bottom nav menu items correspond to the navigation graph destinations
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        rodJob?.cancel()
-        rodJob = null
-        super.onDestroy()
+        binding = null
     }
 }
