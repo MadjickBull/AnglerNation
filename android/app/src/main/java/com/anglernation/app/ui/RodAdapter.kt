@@ -12,9 +12,8 @@ class RodAdapter(
     onRodClick: (RodDto) -> Unit
 ) : RecyclerView.Adapter<RodAdapter.RodViewHolder>() {
 
-    inner class RodViewHolder(view: View) :
-        RecyclerView.ViewHolder(view) {
-        private val nameText: TextView = view.findViewById(android.R.id.text1)
+    inner class RodViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val nameText: TextView = view.findViewById(com.anglernation.app.ui.R.id.name)
 
         init {
             nameText.text = ""
@@ -22,9 +21,8 @@ class RodAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RodViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(android.R.layout.simple_list_item_1, parent, false)
-        return RodViewHolder(view)
+        val binding = RodItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return RodViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: RodViewHolder, position: Int) {
