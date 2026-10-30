@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{base :: base}">
+<head>
+    <title th:text="${title} + ' Detail | AnglerNation'">Detail</title>
+</head>
+<body>
+    <div th:replace="fragments/layout :: navbar"></div>
+    <main class="container-fluid py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 th:text="${title}"><i class="bi" th:class="${icon} me-2"></i>Detail</h1>
+            <div class="d-flex gap-2">
+                <a th:href="@{/{domain}(domain=${domain})}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Back to List
+                </a>
+                <a th:href="@{/{domain}/{id}/edit(domain=${domain}, id=${item.id})}" class="btn btn-primary">
+                    <i class="bi bi-pencil me-1"></i>Edit
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0" th:text="${item.name ?: 'Unnamed'}">Item Name</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-3">ID</dt>
+                            <dd class="col-sm-9 font-monospace small" th:text="${item.id}">ID</dd>
+                            
+                            <dt class="col-sm-3">Name</dt>
+                            <dd class="col-sm-9" th:text="${item.name}">Name</dd>
+                            
+                            <dt class="col-sm-3">Type / Category</dt>
+                            <dd class="col-sm-9" th:text="${item.type ?: item.category ?: '-'}">Type</dd>
+                            
+                            <dt class="col-sm-3">Description</dt>
+                            <dd class="col-sm-9" th:text="${item.description ?: 'No description provided'}">Description</dd>
+                            
+                            <dt class="col-sm-3">Created</dt>
+                            <dd class="col-sm-9" th:text="${item.createdAt ? #temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm') : '-'}">Created</dd>
+                            
+                            <dt class="col-sm-3">Updated</dt>
+                            <dd class="col-sm-9" th:text="${item.updatedAt ? #temporals.format(item.updatedAt, 'yyyy-MM-dd HH:mm') : '-'}">Updated</dd>
+                            
+                            <!-- Domain-specific fields -->
+                            <dt class="col-sm-3">Rod Type</dt>
+                            <dd class="col-sm-9" th:text="${item.rodType ?: '-'}">-</dd>
+                            
+                            <dt class="col-sm-3">Rod Power</dt>
+                            <dd class="col-sm-9" th:text="${item.rodPower ?: '-'}">-</dd>
+                            
+                            <dt class="col-sm-3">Rod Action</dt>
+                            <dd class="col-sm-9" th:text="${item.rodAction ?: '-'}">-</dd>
+                            
+                            <dt class="col-sm-3">Lure Type</dt>
+                            <dd class="col-sm-9" th:text="${item.lureType ?: '-'}">-</dd>
+                            
+                            <dt class="col-sm-3">Lure Buoyancy</dt>
+                            <dd class="col-sm-9" th:text="${item.lureBuoyancy ?: '-'}">-</dd>
+                            
+                            <dt class="col-sm-3">Line Type</dt>
+                            <dd class="col-sm-9" th:text="${item.lineType ?: '-'}">-</dd>
+                            
+                            <dt class="col-sm-3">Location Visibility</dt>
+                            <dd class="col-sm-9" th:text="${item.locationVisibility ?: '-'}">-</dd>
+                            
+                            <dt class="col-sm-3">Fish Type</dt>
+                            <dd class="col-sm-9" th:text="${item.fishType ?: '-'}">-</dd>
+                            
+                            <dt class="col-sm-3">Weight (lbs)</dt>
+                            <dd class="col-sm-9" th:text="${item.weight ?: '-'}">-</dd>
+                            
+                            <dt class="col-sm-3">Length (in)</dt>
+                            <dd class="col-sm-9" th:text="${item.length ?: '-'}">-</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- API Raw Data -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-code me-2"></i>API Raw Data</h5>
+                        <a th:href="@{/api/v1/{domain}/{id}(domain=${domain}, id=${item.id})}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-box-arrow-up-right me-1"></i>Open in API
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <pre class="mb-0 small" style="max-height: 300px; overflow: auto;" th:text="${#json.stringify(item)}">{}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-link-45deg me-2"></i>Quick Links</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a th:href="@{/{domain}(domain=${domain})}" class="btn btn-outline-secondary">
+                                <i class="bi bi-list me-2"></i>Back to List
+                            </a>
+                            <a th:href="@{/{domain}/{id}/edit(domain=${domain}, id=${item.id})}" class="btn btn-primary">
+                                <i class="bi bi-pencil me-2"></i>Edit Item
+                            </a>
+                            <a th:href="@{/api/v1/{domain}/{id}(domain=${domain}, id=${item.id})}" target="_blank" class="btn btn-outline-info">
+                                <i class="bi bi-code me-2"></i>View API JSON
+                            </a>
+                            <a th:href="@{/api/v1/{domain}(domain=${domain})}" target="_blank" class="btn btn-outline-secondary">
+                                <i class="bi bi-box-arrow-up-right me-2"></i>View All API
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>About This Domain</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="small text-muted" th:switch="${domain}">
+                            <span th:case="'rods'">Fishing rods with type, power, and action specifications.</span>
+                            <span th:case="'lures'">Artificial lures with type and buoyancy characteristics.</span>
+                            <span th:case="'lines'">Fishing lines with type, strength, and diameter.</span>
+                            <span th:case="'locations'">Fishing locations with GPS coordinates and visibility settings.</span>
+                            <span th:case="'fish'">Fish species with type classification.</span>
+                            <span th:case="'catches'">Recorded catches with weight, length, location, and gear used.</span>
+                            <span th:case="'posts'">Community posts and discussions.</span>
+                            <span th:case="'comments'">Comments on posts and catches.</span>
+                            <span th:case="'users'">Registered anglers in the system.</span>
+                            <span th:default="*">Domain entity managed by AnglerNation.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/layout :: footer"></footer>
+</body>
+</html>
