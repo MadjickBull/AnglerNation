@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android startDestination="@id/nav_rods">
+
+    <fragment
+        android:id="@+id/nav_rods"
+        android:name="com.anglernation.app.ui.fragments.RodFragment"
+        android:label="Rods" />
+    <fragment
+        android:id="@+id/nav_lures"
+        android:name="com.anglernation.app.ui.fragments.LureFragment"
+        android:label="Lures" />
+    <fragment
+        android:id="@+id/nav_lines"
+        android:name="com.anglernation.app.ui.fragments.LineFragment"
+        android:label="Lines" />
+    <fragment
+        android:id="@+id/nav_locations"
+        android:name="com.anglernation.app.ui.fragments.LocationFragment"
+        android:label="Locations" />
+    <fragment
+        android:id="@+id/nav_fish"
+        android:name="com.anglernation.app.ui.fragments.FishFragment"
+        android:label="Fish" />
+    <fragment
+        android:id="@+id/nav_catches"
+        android:name="com.anglernation.app.ui.fragments.CatchFragment"
+        android:label="Catches" />
+    <fragment
+        android:id="@+id/nav_posts"
+        android:name="com.anglernation.app.ui.fragments.PostFragment"
+        android:label="Posts" />
+    <fragment
+        android:id="@+id/nav_comments"
+        android:name="com.anglernation.app.ui.fragments.CommentFragment"
+        android:label="Comments" />
+
+    <navigation
+        android:id="@+id/nav_graph_auth"
+        app:startDestination="@id/nav_login">
+
+        <fragment
+            android:id="@+id/nav_login"
+            android:name="com.anglernation.app.ui.auth.LoginFragment"
+            android:label="Login" />
+
+        <fragment
+            android:id="@+id/nav_register"
+            android:name="com.anglernation.app.ui.auth.RegisterFragment"
+            android:label="Register" />
+    </navigation>
+</navigation>
