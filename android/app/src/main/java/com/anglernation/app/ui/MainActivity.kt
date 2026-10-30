@@ -13,87 +13,21 @@ import com.squareup.retrofit2.Retrofit
 import com.squareup.retrofit2.converter.moshi.MoshiConverterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import android.widget.Toast
 
-// API data models compatible with Moshi
-data class Rod(
-    val id: String,
-    val name: String,
-    val description: String? = null,
-    val createdAt: String? = null
-)
-
-data class RodDto(
-    val id: String,
-    val name: String,
-    val description: String? = null,
-    val createdAt: String? = null
-)
-
-// API interface
-interface AnglerNationApi {
-    @GET("rods")
-    suspend fun getRods(): List<RodDto>
-
-    companion object {
-        const val BASE_URL = "http://10.0.2.2:8081/"
-    }
-}
-
-// Moshi instance with Kotlin adapter support
-val moshi = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
-
-// Retrofit setup with Moshi converter
-fun createApi(): AnglerNationApi {
-    return Retrofit.Builder()
-        .baseUrl(AnglerNationApi.BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
-        .create(AnglerNationApi::class.java)
-}
-
-// Rod adapter for RecyclerView
-class RodAdapter(
-    private val rodList: List<Rod>,
-    onRodClick: (Rod) -> Unit
-) : Adapter<RodAdapter.RodViewHolder>() {
-
-    inner class RodViewHolder(view: View) : ViewHolder(view) {
-        val nameText: android.widget.TextView = view.findViewById(android.R.id.text1)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RodViewHolder {
-        val view = android.view.LayoutInflater.from(parent.context)
-            .inflate(android.R.layout.simple_list_item_1, parent, false)
-        return RodViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: RodViewHolder, position: Int) {
-        val rod = rodList[position]
-        holder.nameText.text = rod.name
-        holder.itemView.setOnClickListener {
-            onRodClick(rod)
-        }
-    }
-
-    override fun getItemCount(): Int = rodList.size
-}
-
-// Main Activity with ViewBinding and Moshi
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: activity_main_binding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var api: AnglerNationApi
+    private lateinit var rodAdapter: RodAdapter
     private var rodJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // Use ViewBinding instead of findViewById
-        binding = activity_main_binding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Setup toolbar
@@ -174,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                 val rods = api.getRods()
                 lifecycleScope.launch(Dispatchers.Main) {
                     val adapter = binding.recyclerView.adapter as RodAdapter
-                    adapter = RodAdapter(rods) { rod ->
+                    adapter.copy(rodList = rods) { rod ->
                         runOnUiThread {
                             Toast.makeText(this, "Rod: ${rod.name}", Toast.LENGTH_SHORT).show()
                         }
